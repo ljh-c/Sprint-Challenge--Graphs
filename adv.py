@@ -14,8 +14,8 @@ world = World()
 # map_file = "maps/test_line.txt"
 # map_file = "maps/test_cross.txt"
 # map_file = "maps/test_loop.txt"
-map_file = "maps/test_loop_fork.txt"
-# map_file = "maps/main_maze.txt"
+# map_file = "maps/test_loop_fork.txt"
+map_file = "maps/main_maze.txt"
 
 # Loads the map into a dictionary
 room_graph=literal_eval(open(map_file, "r").read())
@@ -125,13 +125,23 @@ while s.size() > 0:
         if '?' not in traversal_graph[player.current_room.id].values():
             explored.add(player.current_room.id)
         else:
+            neighbors = {}
+
             for direction, room in traversal_graph[player.current_room.id].items():
                 if room == '?':
-                    s.push((player.current_room.id, direction))
+                    distance = abs(player.current_room.get_coords()[
+                        0] - 3) + abs(player.current_room.get_coords()[0] - 5)
+
+                    neighbors[(player.current_room.id, direction)] = distance
+            
+            sorted_neighbors = sorted(neighbors.items(), reverse=True)
+
+            for neighbor in sorted_neighbors:
+                s.push(neighbor[0])
 
 # print(f'final path: {traversal_path}')
 # print(f'final dict: {traversal_graph}')
-# print(f'stopped at: {player.current_room.id}')
+print(f'stopped at: {player.current_room.id}')
 print('\n=================================================================\n')
 
 # TRAVERSAL TEST - DO NOT MODIFY
